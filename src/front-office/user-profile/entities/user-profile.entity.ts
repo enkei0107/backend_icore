@@ -1,25 +1,25 @@
+import { Users } from "src/front-office/user/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Users } from "./user.entity";
 
 @Entity()
-export class UserProfiles{
+export class UserProfiles {
     @PrimaryGeneratedColumn('uuid')
-    id:string;
+    id: string;
 
     @Column()
-    name:string
+    name: string
 
     @Column()
-    gender:string
+    gender: string
 
-    @Column({length:50})
-    place_of_birth:string
+    @Column({ length: 50 })
+    place_of_birth: string
 
-    @Column({type:'timestamp'})
-    date_of_birth:Date
+    @Column({ type: 'timestamp' })
+    date_of_birth: Date
 
-    @Column({length:50})
-    religion:string
+    @Column({ length: 50 })
+    religion: string
 
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;
@@ -27,11 +27,8 @@ export class UserProfiles{
     @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
     updated_at?: Date;
 
-    //define your relations
+    //define your relation
     @OneToOne(() => Users, (user) => user.profile)
-    @JoinColumn({name:'user_id'})
+    @JoinColumn()
     user: Users
-
-    @Column('uuid')
-    user_id:string
 }

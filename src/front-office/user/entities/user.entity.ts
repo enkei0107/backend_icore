@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { UserProfiles } from "./user-profile.entity";
+import { UserContacts } from "src/front-office/user-contact/entities/user-contact.entity";
+import { UserProfiles } from "src/front-office/user-profile/entities/user-profile.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Users {
@@ -26,6 +27,9 @@ export class Users {
 
 
     // define your relations
-    @OneToOne(()=>UserProfiles)
-    profile:UserProfiles
+    @OneToOne(() => UserProfiles, (profile) => profile.user, { onUpdate: 'RESTRICT', onDelete: 'CASCADE' })
+    profile?: UserProfiles
+    
+    @OneToMany(type => UserContacts, (contact) => contact.user, { onUpdate: 'RESTRICT', onDelete: 'CASCADE' })
+    contacts:UserContacts[]
 }
