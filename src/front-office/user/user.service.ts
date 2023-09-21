@@ -8,8 +8,8 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UserService {
   constructor(
-    // @InjectRepository(Users)
-    // private usersRepository: Repository<Users>,
+    @InjectRepository(Users)
+    private usersRepository: Repository<Users>,
   ) {}
 
   create(createUserDto: CreateUserDto) {
@@ -17,7 +17,7 @@ export class UserService {
   }
 
   findAll() {
-    // return this.usersRepository.find({ take: 10 });
+    return this.usersRepository.find({ take: 10 });
   }
 
   findOne(id: string) {
