@@ -9,8 +9,11 @@ export class UserContacts {
     @Column({length:50})
     provider: string
     
-    @Column({length:100})
+    @Column({length:100,unique:true})
     address: string
+
+    @Column({default:true})
+    is_primary : Boolean
 
     @Column({default:false})
     is_verified: Boolean

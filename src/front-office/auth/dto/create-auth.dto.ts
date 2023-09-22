@@ -1,1 +1,15 @@
-export class CreateAuthDto {}
+import { z } from 'zod';
+export const CreateAuthDtoSchema = z.object({
+    username: z.string().min(3).max(50).nonempty(),
+    email: z.string().email().nonempty(),
+    password: z.string().nonempty(),
+    password_confirmation : z.string().nonempty()
+}).refine((data) => data.password === data.password_confirmation, {
+    message: "Password confirmation doesn't match the password",
+}).refine((data) => {
+    return data.password !== undefined && data.password_confirmation !== undefined;
+  }, {
+    message: 'Password and password confirmation must both be provided',
+  });;
+
+export type CreateAuthDto = z.infer<typeof CreateAuthDtoSchema>;
