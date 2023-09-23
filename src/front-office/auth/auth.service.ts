@@ -18,9 +18,9 @@ export class AuthService {
 
     @InjectRepository(UserContacts)
     private userContactsRepository: Repository<UserContacts>,
-  ) {}
+  ) { }
 
-  async create(createAuthDto: CreateAuthDto):Promise<Users> {
+  async create(createAuthDto: CreateAuthDto): Promise<Users> {
     const unique_email = await this.userContactsRepository.findOne({
       where: {
         address: createAuthDto.email,
@@ -29,28 +29,35 @@ export class AuthService {
     if (unique_email) {
       throw new error('The Email Has Been Taken');
     }
+
+    // create new user
     const hashed_password = await bcrypt.hash(createAuthDto.password, 10);
-    const new_user = await this.usersRepository.create({
+    const new_user = this.usersRepository.create({
       username: createAuthDto.username,
       password: hashed_password,
+      login_at: new Date()
     });
+    await this.usersRepository.save(new_user);
 
-    await this.userContactsRepository.create({
-      provider:UserContactProviderEnum.EMAIL,
-      address:createAuthDto.email,
-      'user':new_user
+    //create user contacts
+    const user_contacts = this.userContactsRepository.create({
+      provider: UserContactProviderEnum.EMAIL,
+      address: createAuthDto.email,
+      user:new_user
     });
+    await this.userContactsRepository.save(user_contacts);
+
     return new_user;
   }
 
   async login(loginAuthDto: LoginAuthDto): Promise<any> {
     const user = await this.userContactsRepository.findOneOrFail({
-      where:{
-        'provider':UserContactProviderEnum.EMAIL,
-        'address':loginAuthDto.email,
-        'is_primary':true
+      where: {
+        'provider': UserContactProviderEnum.EMAIL,
+        'address': loginAuthDto.email,
+        'is_primary': true
       },
-      relations:['user']
+      relations: ['user']
     });
   }
 }

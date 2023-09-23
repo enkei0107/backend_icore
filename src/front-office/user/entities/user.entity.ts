@@ -5,19 +5,19 @@ import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, Prim
 @Entity()
 export class Users {
     @PrimaryGeneratedColumn('uuid')
-    id:string;
+    id: string;
 
-    @Column({length:50})
-    username:string;
+    @Column({ length: 50, unique: true })
+    username: string;
 
     @Column()
-    password:string;
+    password: string;
 
-    @Column({type:'timestamp'})
+    @Column({ type: 'timestamp' })
     login_at: Date;
 
-    @Column()
-    remember_token: string;
+    @Column({ nullable: true })
+    remember_token?: string;
 
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;
@@ -29,7 +29,7 @@ export class Users {
     // define your relations
     @OneToOne(() => UserProfiles, (profile) => profile.user, { onUpdate: 'RESTRICT', onDelete: 'CASCADE' })
     profile?: UserProfiles
-    
+
     @OneToMany(type => UserContacts, (contact) => contact.user, { onUpdate: 'RESTRICT', onDelete: 'CASCADE' })
-    contacts:UserContacts[]
+    contacts: UserContacts[]
 }

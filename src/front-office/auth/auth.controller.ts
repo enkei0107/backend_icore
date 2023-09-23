@@ -18,7 +18,6 @@ export class AuthController {
       const user = await this.authService.create(payload);
       const token = this.jwtService.sign({ sub: user.id });
       return {
-        user:user,
         token: token
       };
     } catch (error) {
@@ -27,5 +26,5 @@ export class AuthController {
   }
 
   @Post('login')
-  login() { }
+  async login() { }
 }
