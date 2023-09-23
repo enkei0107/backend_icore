@@ -7,6 +7,7 @@ import { dataSourceOptions } from './data-source';
         {
             useFactory:()=>dataSourceOptions
         }
-    )]
+    )],
+    exports:[TypeOrmModule]
 })
 export class DatabaseModule {}

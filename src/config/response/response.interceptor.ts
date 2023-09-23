@@ -46,8 +46,8 @@ export class ResponseInterceptor implements NestInterceptor {
           });
         } else {
           const status_code = err.status || HttpStatus.INTERNAL_SERVER_ERROR;
-          const message = err.response?.name || 'Internal Server Error';
-          let error = err.response?.error || 'error';
+          const message = err.name || 'Internal Server Error';
+          let error = err.message || 'error';
           return throwError(() => {
             return new HttpException(
               {

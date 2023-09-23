@@ -8,6 +8,7 @@ import { error } from 'console';
 import * as bcrypt from 'bcryptjs';
 import { async } from 'rxjs';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { UserContactProviderEnum } from 'src/config/enum/user/user-contact-provider.enum';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
     private userContactsRepository: Repository<UserContacts>,
   ) {}
 
-  async create(createAuthDto: CreateAuthDto): Promise<any> {
+  async create(createAuthDto: CreateAuthDto):Promise<Users> {
     const unique_email = await this.userContactsRepository.findOne({
       where: {
         address: createAuthDto.email,
