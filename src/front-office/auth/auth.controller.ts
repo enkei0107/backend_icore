@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { CreateAuthDto, CreateAuthDtoSchema } from './dto/create-auth.dto';
 import { async } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
+import { LoginAuthDto, LoginAuthDtoSchema } from './dto/login-auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -26,5 +27,17 @@ export class AuthController {
   }
 
   @Post('login')
-  async login() { }
+  async login(@Body() loginAuthDto: LoginAuthDto)
+  {
+    const payload = LoginAuthDtoSchema.parse(loginAuthDto);
+    try {
+      const user = await this.authService.login(payload);
+      const token = this.jwtService.sign({ sub: user.id });
+      return {
+        token: token
+      };
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
+   }
 }

@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   async login(loginAuthDto: LoginAuthDto): Promise<any> {
-    const user = await this.userContactsRepository.findOneOrFail({
+    const user = await this.userContactsRepository.findOne({
       where: {
         'provider': UserContactProviderEnum.EMAIL,
         'address': loginAuthDto.email,
@@ -59,5 +59,9 @@ export class AuthService {
       },
       relations: ['user']
     });
+    if (user && bcrypt.compareSync(loginAuthDto.password, user['user'].password)) {
+      return user['user'];
+    }
+    throw new Error("Email or Password is invalid");
   }
 }
