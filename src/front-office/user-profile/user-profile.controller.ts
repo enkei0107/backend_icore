@@ -1,34 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, HttpException, HttpStatus } from '@nestjs/common';
 import { UserProfileService } from './user-profile.service';
-import { CreateUserProfileDto } from './dto/create-user-profile.dto';
-import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
+import { CreateUserProfileDto, CreateUserProfileDtoSchema } from './dto/create-user-profile.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user-profile')
 export class UserProfileController {
-  constructor(private readonly userProfileService: UserProfileService) {}
+  constructor(
+    private readonly userProfileService: UserProfileService,
+  ) { }
 
   @Post()
-  create(@Body() createUserProfileDto: CreateUserProfileDto) {
-    return this.userProfileService.create(createUserProfileDto);
+  @UseGuards(AuthGuard('jwt'))
+  create(@Body() createUserProfileDto: CreateUserProfileDto, @Request() req) {
+    const payload = CreateUserProfileDtoSchema.parse(createUserProfileDto);
+    try {
+      const current_user = req.user;
+      console.log(current_user);
+      this.userProfileService.create(payload, current_user);
+      return {};
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.userProfileService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userProfileService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserProfileDto: UpdateUserProfileDto) {
-    return this.userProfileService.update(+id, updateUserProfileDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userProfileService.remove(+id);
-  }
 }

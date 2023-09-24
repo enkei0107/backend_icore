@@ -29,6 +29,6 @@ export class UserProfiles {
 
     //define your relation
     @OneToOne(() => Users, (user) => user.profile)
-    @JoinColumn()
+    @JoinColumn({name:'userId'})
     user: Users
 }
