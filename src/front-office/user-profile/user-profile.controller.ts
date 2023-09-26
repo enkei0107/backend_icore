@@ -14,10 +14,8 @@ export class UserProfileController {
   create(@Body() createUserProfileDto: CreateUserProfileDto, @Request() req) {
     const payload = CreateUserProfileDtoSchema.parse(createUserProfileDto);
     try {
-      const current_user = req.user;
-      console.log(current_user);
-      this.userProfileService.create(payload, current_user);
-      return {};
+      const user=this.userProfileService.create(payload, req.user);
+      return {user:user};
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }

@@ -1,5 +1,6 @@
+import { EpochTimestamp } from "src/config/casts/epoch-timestamp.type";
 import { Users } from "src/front-office/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class UserProfiles {
@@ -15,8 +16,8 @@ export class UserProfiles {
     @Column({ length: 50 })
     place_of_birth: string
 
-    @Column({ type: 'timestamp' })
-    date_of_birth: Date
+    @EpochTimestamp() // Use the custom column type for date_of_birth
+    date_of_birth: Date;
 
     @Column({ length: 50 })
     religion: string

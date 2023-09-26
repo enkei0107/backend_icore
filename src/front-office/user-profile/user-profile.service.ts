@@ -15,13 +15,14 @@ export class UserProfileService {
   async create(createUserProfileDto: CreateUserProfileDto, user: Users) {
     const profile = this.userProfileRepository.create({
       name: createUserProfileDto.name,
-      gender: createUserProfileDto.gender,
+      gender: createUserProfileDto.gender,  
       date_of_birth: createUserProfileDto.date_of_birth,
       place_of_birth: createUserProfileDto.place_of_birth,
       religion: createUserProfileDto.religion,
       user: user
     });
     await this.userProfileRepository.save(profile);
+    return profile;
   }
 
   findOne(id: number) {
