@@ -35,14 +35,15 @@ $ pnpm install
 ## Running the app
 
 ```bash
-# development
+# configuration env
+- copy your env
+
+# start app
 $ pnpm run start
 
-# watch mode
-$ pnpm run start:dev
+# migrate database schema
+$ pnpm typeorm migration:run
 
-# production mode
-$ pnpm run start:prod
 ```
 
 ## Test
