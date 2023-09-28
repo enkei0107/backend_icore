@@ -12,25 +12,21 @@ export class UserProfileService {
     private userProfileRepository: Repository<UserProfiles>
   ) { }
 
-  async create(createUserProfileDto: CreateUserProfileDto, user: Users) {
-    const profile = this.userProfileRepository.create({
-      name: createUserProfileDto.name,
-      gender: createUserProfileDto.gender,  
-      date_of_birth: createUserProfileDto.date_of_birth,
-      place_of_birth: createUserProfileDto.place_of_birth,
-      religion: createUserProfileDto.religion,
-      user: user
+  async create(createUserProfileDto: CreateUserProfileDto, user: Users): Promise<UserProfiles> {
+      const profile = this.userProfileRepository.create({
+        name: createUserProfileDto.name,
+        gender: createUserProfileDto.gender,
+        date_of_birth: createUserProfileDto.date_of_birth,
+        place_of_birth: createUserProfileDto.place_of_birth,
+        religion: createUserProfileDto.religion,
+        user: user
+      });
+      return await this.userProfileRepository.save(profile);
+  }
+
+  async findOne(id: string): Promise<UserProfiles> {
+    return await this.userProfileRepository.findOneByOrFail({
+      userId: id
     });
-    await this.userProfileRepository.save(profile);
-    return profile;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} userProfile`;
-  }
-
-
-  remove(id: number) {
-    return `This action removes a #${id} userProfile`;
   }
 }

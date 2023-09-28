@@ -16,7 +16,7 @@ export class UserProfiles {
     @Column({ length: 50 })
     place_of_birth: string
 
-    @EpochTimestamp() // Use the custom column type for date_of_birth
+    @EpochTimestamp()
     date_of_birth: Date;
 
     @Column({ length: 50 })
@@ -30,6 +30,10 @@ export class UserProfiles {
 
     //define your relation
     @OneToOne(() => Users, (user) => user.profile)
-    @JoinColumn({name:'userId'})
+    @JoinColumn({ name: 'userId' })
     user: Users
+
+    @Column('uuid')
+    userId: string
+
 }

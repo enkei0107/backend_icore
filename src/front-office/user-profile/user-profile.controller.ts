@@ -11,14 +11,24 @@ export class UserProfileController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  create(@Body() createUserProfileDto: CreateUserProfileDto, @Request() req) {
+  async create(@Body() createUserProfileDto: CreateUserProfileDto, @Request() req) {
     const payload = CreateUserProfileDtoSchema.parse(createUserProfileDto);
     try {
-      const user=this.userProfileService.create(payload, req.user);
-      return {user:user};
+      const user = await this.userProfileService.create(payload, req.user);
+      return { user: user };
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
 
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  async findOne(@Request() req) {
+    try {
+      const user = await this.userProfileService.findOne(req.user.id);
+      return { user };
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
+  }
 }

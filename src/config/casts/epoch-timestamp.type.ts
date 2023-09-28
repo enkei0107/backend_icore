@@ -2,7 +2,6 @@ import { Column, ValueTransformer } from 'typeorm';
 
 export const EpochTimestampTransformer: ValueTransformer = {
     from: (entityValue: Date) => {
-        console.log(entityValue);
         return Math.floor(entityValue.getTime() / 1000);
     },
     to: (databaseValue: number) => {
