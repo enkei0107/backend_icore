@@ -38,11 +38,12 @@ $ pnpm install
 # configuration env
 - copy your env
 
+# migrate database schema
+$ pnpm typeorm migration:run
+
 # start app
 $ pnpm run start
 
-# migrate database schema
-$ pnpm typeorm migration:run
 
 ```
 
@@ -57,6 +58,16 @@ $ pnpm run test:e2e
 
 # test coverage
 $ pnpm run test:cov
+```
+
+## Migration
+
+```bash
+# generate new migration
+$ pnpm typeorm migration:generate src/database/migrations/{name}
+
+# run migration
+$ pnpm typeorm migration:run
 ```
 
 ## Support
