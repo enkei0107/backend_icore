@@ -6,6 +6,6 @@ import { UserContactModule } from './user-contact/user-contact.module';
 import { UserAddressModule } from './user-address/user-address.module';
 
 @Module({
-  imports: [UserModule, AuthModule, UserProfileModule, UserContactModule, UserAddressModule]
+  imports: [UserModule, AuthModule, UserProfileModule, UserContactModule,UserAddressModule]
 })
 export class FrontOfficeModule {}

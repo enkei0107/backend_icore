@@ -1,9 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserContactDto } from './dto/create-user-contact.dto';
 import { UpdateUserContactDto } from './dto/update-user-contact.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserContacts } from './entities/user-contact.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserContactService {
+  constructor(
+    @InjectRepository(UserContacts)
+    private userContactRepository: Repository<UserContacts>
+  ) {
+
+  }
   create(createUserContactDto: CreateUserContactDto) {
     return 'This action adds a new userContact';
   }
