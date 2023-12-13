@@ -26,7 +26,7 @@ export class UserProfileService {
 
   async findOne(id: string): Promise<UserProfiles> {
     return await this.userProfileRepository.findOneByOrFail({
-      userId: id
+      user_id:id
     });
   }
 }
