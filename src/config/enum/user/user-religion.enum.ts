@@ -3,6 +3,6 @@ const enum ReligionEnum{
     BUDDHA = 'buddha',
     HINDU = 'hindu',
     KRISTEN = 'kristen',
-    CATHOLIC = 'CATHOLIC',
-    KHONGHUCU = 'KHONGHUCU',
+    CATHOLIC = 'catholic',
+    KHONGHUCU = 'khonghucu',
 }
