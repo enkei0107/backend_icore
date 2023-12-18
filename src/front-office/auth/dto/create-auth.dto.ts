@@ -4,15 +4,10 @@ export const CreateAuthDtoSchema = z
   .object({
     username: z.string().min(3).max(50).nonempty(),
     email: z.string().email().nonempty(),
-    account_type: z.any().refine(
-      (value) => {
-        return Object.values(UserAccountTypeEnum).includes(value);
-      },
-      {
-        message: 'Invalid account type value',
-      },
+    account_type: z.enum(
+      Object.values(UserAccountTypeEnum) as [string, ...string[]],
     ),
-    avatar:z.string().url().nullable(),
+    avatar: z.string().url().nullable(),
     password: z.string().nonempty(),
     password_confirmation: z.string().nonempty(),
   })
