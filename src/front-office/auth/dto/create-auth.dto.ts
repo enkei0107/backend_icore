@@ -7,7 +7,6 @@ export const CreateAuthDtoSchema = z
     account_type: z.enum(
       Object.values(UserAccountTypeEnum) as [string, ...string[]],
     ),
-    avatar: z.string().url().nullable(),
     password: z.string().nonempty(),
     password_confirmation: z.string().nonempty(),
   })
