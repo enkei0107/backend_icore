@@ -20,9 +20,11 @@ async function bootstrap() {
       disableErrorMessages: false,
     }),
   );
+
+  // Open Api
   const config = new DocumentBuilder()
-    .setTitle('Api Documentations')
-    .setDescription('Schema API')
+    .setTitle('Api Documentation')
+    .setDescription('Backend API description')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
