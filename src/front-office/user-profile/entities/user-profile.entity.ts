@@ -30,6 +30,9 @@ export class UserProfiles {
   @Column({ length: 50 })
   religion: string;
 
+  @Column({type:'jsonb',default:{}})
+  properties:JSON
+
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 

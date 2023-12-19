@@ -2,8 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, 
 import { UserProfileService } from './user-profile.service';
 import { CreateUserProfileDto, CreateUserProfileDtoSchema } from './dto/create-user-profile.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { zodToOpenAPI } from 'nestjs-zod';
 
 @Controller('user-profile')
+@ApiTags('Front Office - User Profile')
 export class UserProfileController {
   constructor(
     private readonly userProfileService: UserProfileService,
@@ -11,6 +14,9 @@ export class UserProfileController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiBody({schema:zodToOpenAPI(CreateUserProfileDtoSchema)})
+  @ApiResponse({})
   async create(@Body() createUserProfileDto: CreateUserProfileDto, @Request() req) {
     const payload = CreateUserProfileDtoSchema.parse(createUserProfileDto);
     try {
@@ -23,6 +29,8 @@ export class UserProfileController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiBasicAuth()
   async findOne(@Request() req) {
     try {
       const user = await this.userProfileService.findOne(req.user.id);

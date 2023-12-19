@@ -1,8 +1,8 @@
-const enum ReligionEnum{
+export enum ReligionEnum{
     ISLAM = 'islam',
     BUDDHA = 'buddha',
     HINDU = 'hindu',
-    KRISTEN = 'kristen',
-    CATHOLIC = 'CATHOLIC',
-    KHONGHUCU = 'KHONGHUCU',
+    CHRISTIAN = 'christian',
+    CATHOLIC = 'catholic',
+    KHONGHUCU = 'khonghucu',
 }
