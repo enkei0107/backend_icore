@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto, LoginAuthDtoSchema } from './dto/login-auth.dto';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
+import { AuthDtoResponse } from './response/auth.rensponse';
 
 @Controller('auth')
 @ApiTags('Front Office - Auth')
@@ -33,15 +34,14 @@ export class AuthController {
 
   @Post('login')
   @ApiBody({schema:zodToOpenAPI(LoginAuthDtoSchema)})
+  @ApiResponse({type:AuthDtoResponse})
   async login(@Body() loginAuthDto: LoginAuthDto)
   {
     const payload = LoginAuthDtoSchema.parse(loginAuthDto);
     try {
       const user = await this.authService.login(payload);
       const token = this.jwtService.sign({ sub: user.id });
-      return {
-        token: token
-      };
+      return new AuthDtoResponse({token,user});
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }

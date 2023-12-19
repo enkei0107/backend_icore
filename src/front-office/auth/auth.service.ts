@@ -51,7 +51,7 @@ export class AuthService {
     return new_user;
   }
 
-  async login(loginAuthDto: LoginAuthDto): Promise<any> {
+  async login(loginAuthDto: LoginAuthDto): Promise<Users> {
     const user = await this.userContactsRepository.findOne({
       where: {
         'provider': UserContactProviderEnum.EMAIL,
