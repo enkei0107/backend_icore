@@ -1,22 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { url } from 'inspector';
+import { UserContactProviderEnum } from 'src/config/enum/user/user-contact-provider.enum';
 import { GenderEnum } from 'src/config/enum/user/user-gender.enum';
 import { ReligionEnum } from 'src/config/enum/user/user-religion.enum';
 import { UserContacts } from 'src/front-office/user-contact/entities/user-contact.entity';
 import { Users } from 'src/front-office/user/entities/user.entity';
-import { number, string } from 'zod';
+import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 export class UserProfileAddressDtoResponse {
-  @ApiProperty({ type: string })
+  @ApiProperty({ type: String })
   address: string;
 
-  @ApiProperty({ type: string })
+  @ApiProperty({ type: String })
   postal_code: string;
 
-  @ApiProperty({ type: string })
+  @ApiProperty({ type: String })
   sub_district: string;
 
-  @ApiProperty({ type: string })
+  @ApiProperty({ type: String })
   district: string;
 
   constructor(data: Users['address']) {
@@ -28,12 +28,22 @@ export class UserProfileAddressDtoResponse {
 }
 
 export class UserProfileContactsResponse {
-  
+  @ApiProperty({ type: UUID, format: 'uuid' })
   id: string;
+
+  @ApiProperty({ enum: UserContactProviderEnum })
   provider: string;
+
+  @ApiProperty({ type: Boolean })
   is_primary: Boolean;
+
+  @ApiProperty({ type: Boolean })
   is_verified: Boolean;
+
+  @ApiProperty()
   created_at: Date;
+
+  @ApiProperty()
   updated_at: Date;
 
   constructor(data: UserContacts) {
@@ -47,19 +57,19 @@ export class UserProfileContactsResponse {
 }
 
 export class UserProfileDtoResponse {
-  @ApiProperty({ type: url })
+  @ApiProperty({ type: String })
   avatar: string;
 
-  @ApiProperty({ type: string })
+  @ApiProperty({ type: String })
   name: string;
 
-  @ApiProperty({ enum: GenderEnum, type: string })
+  @ApiProperty({ enum: GenderEnum })
   gender: string;
 
-  @ApiProperty({ type: string })
+  @ApiProperty({ type: String })
   place_of_birth: string;
 
-  @ApiProperty({ type: number })
+  @ApiProperty({ type: Number })
   date_of_birth: Date;
 
   @ApiProperty({ enum: ReligionEnum })
@@ -71,7 +81,7 @@ export class UserProfileDtoResponse {
   @ApiProperty({ type: UserProfileAddressDtoResponse })
   address: Object;
 
-  @ApiProperty({ type: UserProfileContactsResponse })
+  @ApiProperty({ type: [UserProfileContactsResponse] })
   contacts: UserProfileContactsResponse[];
 
   constructor(data: Users) {
