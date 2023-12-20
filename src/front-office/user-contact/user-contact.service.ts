@@ -13,7 +13,7 @@ export class UserContactService {
     private userContactRepository: Repository<UserContacts>,
   ) {}
   async create(user: Users, createUserContactDto: CreateUserContactDto) {
-    const exist =await this.userContactRepository.findOneBy({
+    const exist = await this.userContactRepository.findOneBy({
       user_id: user.id,
       is_primary: true,
       provider: createUserContactDto.provider,
@@ -21,7 +21,7 @@ export class UserContactService {
     if (exist) {
       const data = this.userContactRepository.create({
         provider: createUserContactDto.address,
-        address:createUserContactDto.address,
+        address: createUserContactDto.address,
         is_primary: false,
         user: user,
       });
@@ -29,7 +29,7 @@ export class UserContactService {
     } else {
       const data = this.userContactRepository.create({
         provider: createUserContactDto.address,
-        address:createUserContactDto.address,
+        address: createUserContactDto.address,
         is_primary: true,
         user: user,
       });
@@ -45,7 +45,13 @@ export class UserContactService {
     return `This action updates a #${id} userContact`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userContact`;
+  async remove(user: Users, id: string) {
+    const contact = await this.userContactRepository.findOneOrFail({
+      where: {
+        id: id,
+        user_id: user.id,
+      },
+    });
+    await this.userContactRepository.delete(contact.id);
   }
 }
