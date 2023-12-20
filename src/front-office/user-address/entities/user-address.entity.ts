@@ -5,11 +5,9 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { string } from 'zod';
 
 @Entity()
 export class UserAddress {
