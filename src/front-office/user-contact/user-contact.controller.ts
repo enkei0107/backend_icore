@@ -1,29 +1,48 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { UserContactService } from './user-contact.service';
-import { CreateUserContactDto } from './dto/create-user-contact.dto';
+import { CreateUserContactDto, CreateUserContactDtoSchema } from './dto/create-user-contact.dto';
 import { UpdateUserContactDto } from './dto/update-user-contact.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { zodToOpenAPI } from 'nestjs-zod';
 
 @Controller('user-contact')
+@ApiTags('Front Office - User Contacts')
 export class UserContactController {
   constructor(private readonly userContactService: UserContactService) {}
 
   @Post()
-  create(@Body() createUserContactDto: CreateUserContactDto) {
-    return this.userContactService.create(createUserContactDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.userContactService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userContactService.findOne(+id);
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiBody({schema:zodToOpenAPI(CreateUserContactDtoSchema)})
+  @ApiResponse({})
+  async create(@Body() createUserContactDto: CreateUserContactDto, @Request() req) {
+    const payload = CreateUserContactDtoSchema.parse(createUserContactDto);
+    try {
+      await this.userContactService.create(req.user, payload);
+      return {};
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserContactDto: UpdateUserContactDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateUserContactDto: UpdateUserContactDto,
+  ) {
     return this.userContactService.update(+id, updateUserContactDto);
   }
 
