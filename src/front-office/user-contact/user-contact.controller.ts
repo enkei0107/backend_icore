@@ -18,7 +18,13 @@ import {
 } from './dto/create-user-contact.dto';
 import { UpdateUserContactDto } from './dto/update-user-contact.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 
 @Controller('user-contact')
@@ -28,6 +34,7 @@ export class UserContactController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Create User Contacts' })
   @ApiBearerAuth()
   @ApiBody({ schema: zodToOpenAPI(CreateUserContactDtoSchema) })
   @ApiResponse({})
@@ -45,6 +52,9 @@ export class UserContactController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update User Contact' })
+  @ApiBearerAuth()
+  @ApiResponse({})
   update(
     @Param('id') id: string,
     @Body() updateUserContactDto: UpdateUserContactDto,
@@ -54,9 +64,10 @@ export class UserContactController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Delete User Contacts' })
   @ApiBearerAuth()
   @ApiResponse({})
- async remove(@Param('id') id: string, @Request() req) {
+  async remove(@Param('id') id: string, @Request() req) {
     try {
       await this.userContactService.remove(req, id);
       return {};

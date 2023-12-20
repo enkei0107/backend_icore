@@ -17,7 +17,15 @@ import {
   CreateUserAddressDto,
   CreateUserAddressDtoSchema,
 } from './dto/create-user-address.dto';
-import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiExtension,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 
 @Controller('user-address')
@@ -27,6 +35,7 @@ export class UserAddressController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Update Or Create User Address' })
   @ApiBearerAuth()
   @ApiBody({ schema: zodToOpenAPI(CreateUserAddressDtoSchema) })
   @ApiResponse({})
