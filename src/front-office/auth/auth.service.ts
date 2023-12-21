@@ -34,6 +34,7 @@ export class AuthService {
     const hashed_password = await bcrypt.hash(createAuthDto.password, 10);
     const new_user = this.usersRepository.create({
       username: createAuthDto.username,
+      account_type: createAuthDto.account_type,
       password: hashed_password,
       login_at: new Date()
     });
@@ -50,7 +51,7 @@ export class AuthService {
     return new_user;
   }
 
-  async login(loginAuthDto: LoginAuthDto): Promise<any> {
+  async login(loginAuthDto: LoginAuthDto): Promise<Users> {
     const user = await this.userContactsRepository.findOne({
       where: {
         'provider': UserContactProviderEnum.EMAIL,

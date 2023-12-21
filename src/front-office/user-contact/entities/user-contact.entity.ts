@@ -1,32 +1,49 @@
-import { Users } from "src/front-office/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Users } from 'src/front-office/user/entities/user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
-export class UserContacts { 
-    @PrimaryGeneratedColumn('uuid')
-    id:string
+export class UserContacts {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({length:50})
-    provider: string
-    
-    @Column({length:100,unique:true})
-    address: string
+  @Column({ length: 50 })
+  provider: string;
 
-    @Column({default:true})
-    is_primary : Boolean
+  @Column({ length: 100, unique: true })
+  address: string;
 
-    @Column({default:false})
-    is_verified: Boolean
+  @Column({ default: true })
+  is_primary: Boolean;
 
-    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    created_at: Date;
+  @Column({ default: false })
+  is_verified: Boolean;
 
-    @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-    updated_at?: Date;
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
 
-    // define your relations
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updated_at?: Date;
 
-    @ManyToOne(() => Users, (user) => user.contacts)
-    user: Users
-    
+  // define your relations
+
+  @ManyToOne(() => Users, (user) => user.contacts, {
+    onDelete: 'CASCADE',
+    onUpdate: 'RESTRICT',
+  })
+  @JoinColumn({ name: 'user_id' })
+  user: Users;
+  @Column({ type: 'uuid' })
+  user_id: string;
 }

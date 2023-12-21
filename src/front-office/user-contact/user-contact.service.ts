@@ -4,21 +4,37 @@ import { UpdateUserContactDto } from './dto/update-user-contact.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserContacts } from './entities/user-contact.entity';
 import { Repository } from 'typeorm';
+import { Users } from '../user/entities/user.entity';
 
 @Injectable()
 export class UserContactService {
   constructor(
     @InjectRepository(UserContacts)
-    private userContactRepository: Repository<UserContacts>
-  ) {
-
-  }
-  create(createUserContactDto: CreateUserContactDto) {
-    return 'This action adds a new userContact';
-  }
-
-  findAll() {
-    return `This action returns all userContact`;
+    private userContactRepository: Repository<UserContacts>,
+  ) {}
+  async create(user: Users, createUserContactDto: CreateUserContactDto) {
+    const exist = await this.userContactRepository.findOneBy({
+      user_id: user.id,
+      is_primary: true,
+      provider: createUserContactDto.provider,
+    });
+    if (exist) {
+      const data = this.userContactRepository.create({
+        provider: createUserContactDto.address,
+        address: createUserContactDto.address,
+        is_primary: false,
+        user: user,
+      });
+      return await this.userContactRepository.save(data);
+    } else {
+      const data = this.userContactRepository.create({
+        provider: createUserContactDto.address,
+        address: createUserContactDto.address,
+        is_primary: true,
+        user: user,
+      });
+      return await this.userContactRepository.save(data);
+    }
   }
 
   findOne(id: number) {
@@ -29,7 +45,13 @@ export class UserContactService {
     return `This action updates a #${id} userContact`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userContact`;
+  async remove(user: Users, id: string) {
+    const contact = await this.userContactRepository.findOneOrFail({
+      where: {
+        id: id,
+        user_id: user.id,
+      },
+    });
+    await this.userContactRepository.delete(contact.id);
   }
 }
