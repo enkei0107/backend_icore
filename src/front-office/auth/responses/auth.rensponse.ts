@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserAccountTypeEnum } from 'src/config/enum/user/user-account-type.enum';
+import { ResponseDataSwagger, ResponseMetaSwagger } from 'src/config/response/response-meta.swagger';
 import { string } from 'zod';
 
 export class AuthDtoResponse {
@@ -16,4 +17,10 @@ export class AuthDtoResponse {
     this.token = data?.token || '';
     this.account_type = data?.user?.account_type || '';
   }
+}
+export class AuthResponseSchema{
+  @ApiProperty({type:ResponseMetaSwagger})
+  meta:ResponseMetaSwagger
+  @ApiProperty({type:AuthDtoResponse})
+  data:AuthDtoResponse
 }

@@ -16,7 +16,7 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto, LoginAuthDtoSchema } from './dto/login-auth.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { AuthDtoResponse } from './response/auth.rensponse';
+import { AuthDtoResponse, AuthResponseSchema } from './responses/auth.rensponse';
 
 @Controller('auth')
 @ApiTags('Front Office - Auth')
@@ -24,20 +24,18 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   @Post('register')
   @ApiOperation({ summary: 'User Register' })
   @ApiBody({ schema: zodToOpenAPI(CreateAuthDtoSchema) })
-  @ApiResponse({ status: 200, schema: zodToOpenAPI(CreateAuthDtoSchema) })
+  @ApiResponse({ status: 201, type: AuthResponseSchema })
   async create(@Body() createAuthDto: CreateAuthDto) {
     const payload = CreateAuthDtoSchema.parse(createAuthDto);
     try {
       const user = await this.authService.create(payload);
       const token = this.jwtService.sign({ sub: user.id });
-      return {
-        token: token,
-      };
+      return new AuthDtoResponse({ token, user });
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
@@ -46,7 +44,7 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: 'User Login' })
   @ApiBody({ schema: zodToOpenAPI(LoginAuthDtoSchema) })
-  @ApiResponse({ type: AuthDtoResponse })
+  @ApiResponse({ type: AuthResponseSchema })
   async login(@Body() loginAuthDto: LoginAuthDto) {
     const payload = LoginAuthDtoSchema.parse(loginAuthDto);
     try {

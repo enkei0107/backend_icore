@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UserContactProviderEnum } from 'src/config/enum/user/user-contact-provider.enum';
 import { GenderEnum } from 'src/config/enum/user/user-gender.enum';
 import { ReligionEnum } from 'src/config/enum/user/user-religion.enum';
+import { ResponseMetaSwagger } from 'src/config/response/response-meta.swagger';
 import { UserContacts } from 'src/front-office/user-contact/entities/user-contact.entity';
 import { Users } from 'src/front-office/user/entities/user.entity';
 import { UUID } from 'typeorm/driver/mongodb/bson.typings';
@@ -95,8 +96,14 @@ export class UserProfileDtoResponse {
       : {};
     this.contacts = data['contacts']
       ? data['contacts'].map(
-          (contact) => new UserProfileContactsResponse(contact),
-        )
+        (contact) => new UserProfileContactsResponse(contact),
+      )
       : [];
   }
+}
+export class UserProfileResponseSchema {
+  @ApiProperty({ type: ResponseMetaSwagger })
+  meta:ResponseMetaSwagger
+  @ApiProperty({ type: UserProfileDtoResponse })
+  data: UserProfileDtoResponse;
 }

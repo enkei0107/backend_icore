@@ -28,7 +28,7 @@ export class UserProfileService {
               avatar: createUserProfileDto.avatar,
             });
           }
-          const profileExisting = manager.findOne(UserProfiles, {
+          const profileExisting =await manager.findOne(UserProfiles, {
             where: {
               user_id: user.id,
             },
