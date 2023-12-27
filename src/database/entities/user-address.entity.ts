@@ -1,5 +1,3 @@
-import { EpochTimestamp } from 'src/config/casts/epoch-timestamp.type';
-import { Users } from 'src/front-office/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,29 +7,27 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Users } from './user.entity';
 
 @Entity()
-export class UserProfiles {
+export class UserAddress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  name: string;
+  address: string;
+
+  @Column({ length: 20 })
+  postal_code: string;
 
   @Column()
-  gender: string;
+  sub_district: string;
+
+  @Column()
+  district: string;
 
   @Column({ length: 50 })
-  place_of_birth: string;
-
-  @EpochTimestamp()
-  date_of_birth: Date;
-
-  @Column({ length: 50 })
-  religion: string;
-
-  @Column({type:'jsonb',default:{}})
-  properties:JSON
+  country: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
@@ -43,8 +39,8 @@ export class UserProfiles {
   })
   updated_at?: Date;
 
-  //define your relation
-  @OneToOne(() => Users, (user) => user.profile, {
+  // define your relation
+  @OneToOne(() => Users, (user) => user.address, {
     onDelete: 'CASCADE',
     onUpdate: 'RESTRICT',
   })

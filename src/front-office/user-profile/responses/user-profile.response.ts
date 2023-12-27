@@ -3,8 +3,8 @@ import { UserContactProviderEnum } from 'src/config/enum/user/user-contact-provi
 import { GenderEnum } from 'src/config/enum/user/user-gender.enum';
 import { ReligionEnum } from 'src/config/enum/user/user-religion.enum';
 import { ResponseMetaSwagger } from 'src/config/response/response-meta.swagger';
-import { UserContacts } from 'src/front-office/user-contact/entities/user-contact.entity';
-import { Users } from 'src/front-office/user/entities/user.entity';
+import { UserContacts } from 'src/database/entities/user-contact.entity';
+import { Users } from 'src/database/entities/user.entity';
 import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 export class UserProfileAddressDtoResponse {

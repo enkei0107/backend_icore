@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserContactDto } from './dto/create-user-contact.dto';
 import { UpdateUserContactDto } from './dto/update-user-contact.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserContacts } from './entities/user-contact.entity';
+import { UserContacts } from '../../database/entities/user-contact.entity';
 import { Repository } from 'typeorm';
-import { Users } from '../user/entities/user.entity';
+import { Users } from '../../database/entities/user.entity';
 
 @Injectable()
 export class UserContactService {

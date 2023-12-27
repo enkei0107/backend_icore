@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from './entities/user.entity';
+import { Users } from '../../database/entities/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class UserService {
   }
 
   findOne(id: string) {
-    return this.usersRepository.findOneByOrFail({id});
+    return this.usersRepository.findOneByOrFail({ id });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

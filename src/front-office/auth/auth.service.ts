@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from '../user/entities/user.entity';
+import { Users } from '../../database/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserContacts } from '../user-contact/entities/user-contact.entity';
+import { UserContacts } from '../../database/entities/user-contact.entity';
 import { error } from 'console';
 import * as bcrypt from 'bcryptjs';
 import { async } from 'rxjs';
@@ -18,7 +18,7 @@ export class AuthService {
 
     @InjectRepository(UserContacts)
     private userContactsRepository: Repository<UserContacts>,
-  ) { }
+  ) {}
 
   async create(createAuthDto: CreateAuthDto): Promise<Users> {
     const unique_email = await this.userContactsRepository.findOne({
@@ -36,7 +36,7 @@ export class AuthService {
       username: createAuthDto.username,
       account_type: createAuthDto.account_type,
       password: hashed_password,
-      login_at: new Date()
+      login_at: new Date(),
     });
     await this.usersRepository.save(new_user);
 
@@ -44,7 +44,7 @@ export class AuthService {
     const user_contacts = this.userContactsRepository.create({
       provider: UserContactProviderEnum.EMAIL,
       address: createAuthDto.email,
-      user:new_user
+      user: new_user,
     });
     await this.userContactsRepository.save(user_contacts);
 
@@ -54,15 +54,18 @@ export class AuthService {
   async login(loginAuthDto: LoginAuthDto): Promise<Users> {
     const user = await this.userContactsRepository.findOne({
       where: {
-        'provider': UserContactProviderEnum.EMAIL,
-        'address': loginAuthDto.email,
-        'is_primary': true
+        provider: UserContactProviderEnum.EMAIL,
+        address: loginAuthDto.email,
+        is_primary: true,
       },
-      relations: ['user']
+      relations: ['user'],
     });
-    if (user && bcrypt.compareSync(loginAuthDto.password, user['user'].password)) {
+    if (
+      user &&
+      bcrypt.compareSync(loginAuthDto.password, user['user'].password)
+    ) {
       return user['user'];
     }
-    throw new Error("Email or Password is invalid");
+    throw new Error('Email or Password is invalid');
   }
 }

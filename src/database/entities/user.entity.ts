@@ -1,6 +1,4 @@
-import { UserAddress } from 'src/front-office/user-address/entities/user-address.entity';
-import { UserContacts } from 'src/front-office/user-contact/entities/user-contact.entity';
-import { UserProfiles } from 'src/front-office/user-profile/entities/user-profile.entity';
+
 import {
   Column,
   CreateDateColumn,
@@ -11,6 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserAddress } from './user-address.entity';
+import { UserProfiles } from './user-profile.entity';
+import { UserContacts } from './user-contact.entity';
 
 @Entity()
 export class Users {

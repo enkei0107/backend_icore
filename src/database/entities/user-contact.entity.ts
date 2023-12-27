@@ -1,33 +1,30 @@
-import { Users } from 'src/front-office/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Users } from './user.entity';
 
 @Entity()
-export class UserAddress {
+export class UserContacts {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ length: 50 })
+  provider: string;
+
+  @Column({ length: 100, unique: true })
   address: string;
 
-  @Column({ length: 20 })
-  postal_code: string;
+  @Column({ default: true })
+  is_primary: Boolean;
 
-  @Column()
-  sub_district: string;
-
-  @Column()
-  district: string;
-
-  @Column({ length: 50 })
-  country: string;
+  @Column({ default: false })
+  is_verified: Boolean;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
@@ -39,8 +36,9 @@ export class UserAddress {
   })
   updated_at?: Date;
 
-  // define your relation
-  @OneToOne(() => Users, (user) => user.address, {
+  // define your relations
+
+  @ManyToOne(() => Users, (user) => user.contacts, {
     onDelete: 'CASCADE',
     onUpdate: 'RESTRICT',
   })

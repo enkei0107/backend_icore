@@ -2,8 +2,8 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserProfileDto } from './dto/create-user-profile.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager } from 'typeorm';
-import { UserProfiles } from './entities/user-profile.entity';
-import { Users } from '../user/entities/user.entity';
+import { UserProfiles } from '../../database/entities/user-profile.entity';
+import { Users } from '../../database/entities/user.entity';
 import { isSet } from 'util/types';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class UserProfileService {
               avatar: createUserProfileDto.avatar,
             });
           }
-          const profileExisting =await manager.findOne(UserProfiles, {
+          const profileExisting = await manager.findOne(UserProfiles, {
             where: {
               user_id: user.id,
             },
