@@ -7,8 +7,10 @@ import {
 } from '@nestjs/common';
 import { SettingService } from './setting.service';
 import { Settings } from 'src/database/entities/setting.entity';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('setting')
+@Controller('backoffice/setting')
+@ApiTags('Back Office - Setting')
 export class SettingController {
   constructor(private readonly settingService: SettingService) {}
 
