@@ -24,7 +24,12 @@ export class MediaService {
       };
 
       const response = await this.s3.upload(params).promise();
-      return response;
+      return {
+        size:file.size,
+        mimeType:mimeType,
+        url:response.Location,
+        path:response.Key
+      };
     } catch (error) {
       throw new Error(`Failed to upload file: ${error.message}`);
     }
