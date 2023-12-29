@@ -21,8 +21,8 @@ export class Users {
   @Column({ length: 50, unique: true })
   username: string;
 
-  @Column()
-  password: string;
+  @Column({nullable:true})
+  password?: string;
 
   @Column({length:50})
   account_type:string
