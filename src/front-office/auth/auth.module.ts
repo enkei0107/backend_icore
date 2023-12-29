@@ -8,6 +8,8 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { UserService } from '../user/user.service';
+import { RateLimiterModule } from 'nestjs-rate-limiter';
+import { rateLimiterConfig } from 'src/config/interceptor/rate-limiter.config';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { UserService } from '../user/user.service';
       secret: 'your-secret-key',
       signOptions: { expiresIn: '1h' },
     }),
+    RateLimiterModule.registerAsync(rateLimiterConfig),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, UserService],

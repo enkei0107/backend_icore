@@ -1,17 +1,14 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   HttpException,
   HttpStatus,
+  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto, CreateAuthDtoSchema } from './dto/create-auth.dto';
-import { async } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto, LoginAuthDtoSchema } from './dto/login-auth.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -21,6 +18,7 @@ import {
   AuthResponseSchema,
 } from './responses/auth.rensponse';
 import { Oauth2Dto, Oauth2DtoSchema } from './dto/oauth2-auth.dto';
+import { RateLimiterGuard } from 'nestjs-rate-limiter';
 
 @Controller('auth')
 @ApiTags('Front Office - Auth')
@@ -47,6 +45,7 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'User Login' })
+  @UseGuards(RateLimiterGuard)
   @ApiBody({ schema: zodToOpenAPI(LoginAuthDtoSchema) })
   @ApiResponse({ type: AuthResponseSchema })
   async login(@Body() loginAuthDto: LoginAuthDto) {

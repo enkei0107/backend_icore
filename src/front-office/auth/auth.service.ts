@@ -11,7 +11,6 @@ import { UserContactProviderEnum } from 'src/config/enum/user/user-contact-provi
 import axios, { AxiosResponse } from 'axios';
 import { Oauth2Dto } from './dto/oauth2-auth.dto';
 import { OauthProviderEnum } from 'src/config/enum/auth/oauth-provider.enum';
-import { link } from 'fs';
 import { OauthFormatDto } from './dto/oauth-format.dto';
 import { UserAccountTypeEnum } from 'src/config/enum/user/user-account-type.enum';
 @Injectable()
