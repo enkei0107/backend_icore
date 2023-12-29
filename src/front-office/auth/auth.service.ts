@@ -183,10 +183,11 @@ export class AuthService {
           },
         },
       );
+      console.log(getUserInfo);
       return {
         email: getUserInfo?.data.email.toLowerCase(),
         name: getUserInfo?.data?.name,
-        avatar: getUserInfo?.data?.avatar_url,
+        avatar: getUserInfo?.data?.picture,
       };
     } catch (error) {
       throw new Error(error);
