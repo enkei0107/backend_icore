@@ -17,13 +17,15 @@ export class SettingService implements OnModuleInit {
   //load config
   async loadConfig() {
     const allSettings = await this.settingRepository.find();
-    this.settings = allSettings.reduce((acc, setting) => {
-      setting.setting.forEach((item) => {
-        const key = `${item.setting_name}_${setting.id}`;
-        acc[key] = item.value;
-      });
-      return acc;
-    }, {});
+    if(allSettings){
+      this.settings = allSettings.reduce((acc, setting) => {
+        setting.setting.forEach((item) => {
+          const key = `${item.setting_name}_${setting.id}`;
+          acc[key] = item.value;
+        });
+        return acc;
+      }, {});
+    }
   }
   getValue(settingName: string, id: string): any {
     const key = `${settingName}_${id}`;

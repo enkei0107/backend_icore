@@ -20,9 +20,12 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "pnpm build && pnpm dlx typeorm -d dist/database/data-source.js",
     "migration:generate": "pnpm typeorm -- migration:generate",
-    "migration:run": "pnpm typeorm -- migration:run"
+    "migration:run": "pnpm typeorm -- migration:run",
+    "seed:run": "pnpm build && pnpm typeorm-seeding -d dist/database/data-source.js seed dist/database/seeders/database.seeder.js"
   },
   "dependencies": {
+    "@jorgebodega/typeorm-factory": "^1.4.0",
+    "@jorgebodega/typeorm-seeding": "^6.0.1",
     "@nestjs/axios": "^3.0.1",
     "@nestjs/common": "^10.2.10",
     "@nestjs/config": "^3.1.1",
