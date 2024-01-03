@@ -21,7 +21,12 @@ export class UserService {
   }
 
   findOne(id: string) {
-    return this.usersRepository.findOneByOrFail({ id });
+    return this.usersRepository.findOneOrFail({
+      where: {
+        id: id,
+      },
+      relations: ['role.role'],
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

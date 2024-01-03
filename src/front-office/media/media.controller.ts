@@ -10,7 +10,7 @@ import { MediaService } from './media.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MediaResponseDto, MediaResponseSwaggerSchema } from './response/media.response';
-@Controller('media')
+@Controller('api/media')
 @ApiTags('Front Office - Media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}

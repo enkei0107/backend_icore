@@ -28,7 +28,7 @@ import {
 } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 
-@Controller('user-address')
+@Controller('api/user-address')
 @ApiTags('Front Office - User Address')
 export class UserAddressController {
   constructor(private readonly userAddressService: UserAddressService) {}

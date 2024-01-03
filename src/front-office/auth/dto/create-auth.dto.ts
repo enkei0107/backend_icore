@@ -4,7 +4,7 @@ export const CreateAuthDtoSchema = z
   .object({
     username: z.string().min(3).max(50).nonempty(),
     email: z.string().email().nonempty(),
-    account_type: z.enum(
+    role: z.enum(
       Object.values(UserAccountTypeEnum) as [string, ...string[]],
     ),
     password: z.string().nonempty(),

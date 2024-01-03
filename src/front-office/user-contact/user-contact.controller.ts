@@ -27,7 +27,7 @@ import {
 } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 
-@Controller('user-contact')
+@Controller('api/user-contact')
 @ApiTags('Front Office - User Contacts')
 export class UserContactController {
   constructor(private readonly userContactService: UserContactService) {}

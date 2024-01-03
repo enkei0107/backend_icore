@@ -21,7 +21,7 @@ export class UserService {
       defaultLimit: 10,
       sortableColumns: ['created_at'],
       defaultSortBy: [['created_at', 'DESC']],
-      searchableColumns:['username','account_type'],
+      searchableColumns:['username'],
       filterableColumns: {
         username: true,
       },

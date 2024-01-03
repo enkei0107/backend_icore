@@ -24,7 +24,7 @@ import {
 import { zodToOpenAPI } from 'nestjs-zod';
 import { UserProfileDtoResponse, UserProfileResponseSchema } from './responses/user-profile.response';
 
-@Controller('user-profile')
+@Controller('api/user-profile')
 @ApiTags('Front Office - User Profile')
 export class UserProfileController {
   constructor(private readonly userProfileService: UserProfileService) {}

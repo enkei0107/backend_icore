@@ -10,10 +10,12 @@ import { JwtStrategy } from './jwt.strategy';
 import { UserService } from '../user/user.service';
 import { RateLimiterModule } from 'nestjs-rate-limiter';
 import { rateLimiterConfig } from 'src/config/interceptor/rate-limiter.config';
+import { UserRoles } from 'src/database/entities/user-role.entity';
+import { Roles } from 'src/database/entities/role.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Users, UserContacts]),
+    TypeOrmModule.forFeature([Users, UserContacts,UserRoles,Roles]),
     PassportModule,
     JwtModule.register({
       secret: 'your-secret-key',

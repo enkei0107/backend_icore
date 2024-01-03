@@ -39,7 +39,7 @@ $ pnpm install
 - copy your env
 
 # migrate database schema
-$ pnpm migration:run
+$ pnpm typeorm migration:run
 
 # start app
 $ pnpm run start
@@ -64,10 +64,10 @@ $ pnpm run test:cov
 
 ```bash
 # generate new migration
-$ pnpm migration:generate src/database/migrations/{name}
+$ pnpm typeorm migration:generate src/database/migrations/{name}
 
 # run migration
-$ pnpm migration:run
+$ pnpm typeorm migration:run
 ```
 
 ## Seed

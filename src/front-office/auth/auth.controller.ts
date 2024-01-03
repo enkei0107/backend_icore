@@ -20,7 +20,7 @@ import {
 import { Oauth2Dto, Oauth2DtoSchema } from './dto/oauth2-auth.dto';
 import { RateLimiterGuard } from 'nestjs-rate-limiter';
 
-@Controller('auth')
+@Controller('api/auth')
 @ApiTags('Front Office - Auth')
 export class AuthController {
   constructor(
@@ -61,6 +61,7 @@ export class AuthController {
 
   @Post('oauth2')
   @ApiBody({ schema: zodToOpenAPI(Oauth2DtoSchema) })
+  @ApiResponse({ status: 201, type: AuthResponseSchema })
   async oauth2(@Body() oauthDto: Oauth2Dto) {
     const payload = Oauth2DtoSchema.parse(oauthDto);
     try {

@@ -1,4 +1,3 @@
-
 import {
   Column,
   CreateDateColumn,
@@ -12,6 +11,7 @@ import {
 import { UserAddress } from './user-address.entity';
 import { UserProfiles } from './user-profile.entity';
 import { UserContacts } from './user-contact.entity';
+import { UserRoles } from './user-role.entity';
 
 @Entity()
 export class Users {
@@ -21,11 +21,8 @@ export class Users {
   @Column({ length: 50, unique: true })
   username: string;
 
-  @Column({nullable:true})
+  @Column({ nullable: true })
   password?: string;
-
-  @Column({length:50})
-  account_type:string
 
   @Column({ type: 'timestamp' })
   login_at: Date;
@@ -47,6 +44,11 @@ export class Users {
   updated_at?: Date;
 
   // define your relations
+  @OneToMany(() => UserRoles, (userRole) => userRole.user, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  role?: UserRoles;
   @OneToOne(() => UserProfiles, (profile) => profile.user, {
     onUpdate: 'RESTRICT',
     onDelete: 'CASCADE',
