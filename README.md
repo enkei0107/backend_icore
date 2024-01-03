@@ -39,7 +39,7 @@ $ pnpm install
 - copy your env
 
 # migrate database schema
-$ pnpm typeorm migration:run
+$ pnpm migration:run
 
 # start app
 $ pnpm run start
