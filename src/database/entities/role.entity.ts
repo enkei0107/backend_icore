@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserRolePermissions } from './user-role-permission.entity';
 
 @Entity()
 export class Roles {
@@ -23,4 +25,11 @@ export class Roles {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updated_at?: Date;
+
+  // define your relations
+  @OneToMany(() => UserRolePermissions, (user_roles) => user_roles.role, {
+    onDelete: 'CASCADE',
+    onUpdate: 'RESTRICT',
+  })
+  user_roles: UserRolePermissions[];
 }

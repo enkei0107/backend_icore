@@ -4,11 +4,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Users } from './user.entity';
 import { Roles } from './role.entity';
+import { UserRolePermissions } from './user-role-permission.entity';
 
 @Entity()
 export class UserRoles {
@@ -44,4 +46,5 @@ export class UserRoles {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updated_at?: Date;
+
 }
