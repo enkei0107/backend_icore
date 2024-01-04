@@ -11,21 +11,26 @@ export class UserRolePermissionService {
     private readonly rolePermissionRepository: Repository<UserRolePermissions>,
   ) {}
 
-  async create(createDto: CreateUserRoleDto): Promise<UserRolePermissions> {
-    const exists = await this.rolePermissionRepository.findOne({
-      where: {
-        role_id: createDto.role_id,
-        permission_id: createDto.permission_id,
-      },
-    });
-    if (exists) {
-      return exists;
+  async create(createDto: CreateUserRoleDto): Promise<void> {
+    const { role_id, permission_id } = createDto;
+
+    for (const element of permission_id) {
+      const existingUserRolePermissions =
+        await this.rolePermissionRepository.findOne({
+          where: {
+            role_id,
+            permission_id: element,
+          },
+        });
+
+      if (!existingUserRolePermissions) {
+        const newUserRolePermissions = this.rolePermissionRepository.create({
+          role_id: role_id,
+          permission_id: element,
+        });
+        await this.rolePermissionRepository.save(newUserRolePermissions);
+      }
     }
-    const data = this.rolePermissionRepository.create({
-      role_id: createDto.role_id,
-      permission_id: createDto.permission_id,
-    });
-    return await this.rolePermissionRepository.save(data);
   }
   async remove(id: string): Promise<UserRolePermissions> {
     const data = await this.rolePermissionRepository.findOneOrFail({

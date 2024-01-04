@@ -44,7 +44,8 @@ export class PermissionController {
   @ApiResponse({})
   async synchronized(@Request() req: ExpressRequest) {
     try {
-      return await this.permissionService.synchronized(req);
+      await this.permissionService.synchronized(req);
+      return {};
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
