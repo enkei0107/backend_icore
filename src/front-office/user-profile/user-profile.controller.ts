@@ -41,8 +41,8 @@ export class UserProfileController {
   ) {
     const payload = CreateUserProfileDtoSchema.parse(createUserProfileDto);
     try {
-      const user = await this.userProfileService.create(payload, req.user);
-      return { user: user };
+      await this.userProfileService.create(payload, req.user);
+      return {};
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }

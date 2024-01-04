@@ -23,7 +23,7 @@ export class UserProfileService {
     return this.userRepository.manager.transaction(
       async (manager: EntityManager) => {
         try {
-          if (isSet(createUserProfileDto.avatar)) {
+          if (createUserProfileDto.avatar) {
             await manager.update(Users, user.id, {
               avatar: createUserProfileDto.avatar,
             });
@@ -37,7 +37,12 @@ export class UserProfileService {
             await manager.update(
               UserProfiles,
               { user_id: user.id },
-              createUserProfileDto,
+              {
+                name:createUserProfileDto.name,
+                gender:createUserProfileDto.gender,
+                place_of_birth:createUserProfileDto.place_of_birth,
+                religion:createUserProfileDto.religion
+              }
             );
             return await manager.findOne(UserProfiles, {
               where: { user_id: user.id },
@@ -54,10 +59,7 @@ export class UserProfileService {
             return await manager.save(UserProfiles, profile);
           }
         } catch (error) {
-          throw new HttpException(
-            'Transaction failed',
-            HttpStatus.INTERNAL_SERVER_ERROR,
-          );
+          throw error;
         }
       },
     );
