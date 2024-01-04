@@ -17,5 +17,6 @@ import { RateLimiterModule } from 'nestjs-rate-limiter';
   ],
   controllers: [AppController],
   providers: [AppService, ...InterceptorProvider],
+  exports: [AppModule]
 })
-export class AppModule {}
+export class AppModule { }
