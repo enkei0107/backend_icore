@@ -5,11 +5,11 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class SettingService implements OnModuleInit {
+  private static settings: Record<string, any> = {};
   constructor(
     @InjectRepository(Settings)
     private readonly settingRepository: Repository<Settings>,
   ) {}
-  private settings: Record<string, any> = {};
   async onModuleInit() {
     // throw new Error('Method not implemented.');
     await this.loadConfig();
@@ -18,7 +18,7 @@ export class SettingService implements OnModuleInit {
   async loadConfig() {
     const allSettings = await this.settingRepository.find();
     if(allSettings){
-      this.settings = allSettings.reduce((acc, setting) => {
+      SettingService.settings = allSettings.reduce((acc, setting) => {
         setting.setting.forEach((item) => {
           const key = `${item.setting_name}_${setting.id}`;
           acc[key] = item.value;
@@ -29,11 +29,8 @@ export class SettingService implements OnModuleInit {
   }
   getValue(settingName: string, id: string): any {
     const key = `${settingName}_${id}`;
-    return this.settings[key];
+    return SettingService.settings[key];
   }
-
-
-
 
   async findOneById(id: string): Promise<Settings> {
     return await this.settingRepository.findOneOrFail({

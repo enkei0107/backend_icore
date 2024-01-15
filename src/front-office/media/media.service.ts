@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
+require('dotenv').config();
 @Injectable()
 export class MediaService {
   private s3: AWS.S3;
