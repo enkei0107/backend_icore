@@ -3,12 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Permissions } from 'src/database/entities/permission.entity';
 import { Repository } from 'typeorm';
 import { Request as ExpressRequest, Router } from 'express';
+import { AdminRoleHasPermissions } from 'src/database/entities/admin-role-has-permission.entity';
 
 @Injectable()
 export class PermissionService {
   constructor(
     @InjectRepository(Permissions)
     private readonly permissionRepository: Repository<Permissions>,
+    @InjectRepository(AdminRoleHasPermissions)
+		private readonly adminRoleHasPermission: Repository<AdminRoleHasPermissions>
   ) {}
 
   async get() {
@@ -18,6 +21,19 @@ export class PermissionService {
       },
     });
   }
+  async findRoleHasPermissionByName(permission: string, role_id: string) {
+		return await this.adminRoleHasPermission.findOne({
+			relations:{
+        permission:true
+      },
+			where: {
+				role_id: role_id,
+				permission: {
+					end_point: permission,
+				},
+			},
+		});
+	}
   async synchronized(req: ExpressRequest) {
     try {
       const routeList = await this.getRouteList(req);
