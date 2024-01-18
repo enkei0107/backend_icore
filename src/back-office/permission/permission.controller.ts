@@ -9,14 +9,19 @@ import {
 } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { Request as ExpressRequest } from 'express';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   ShowPermissionItem,
   ShowPermissionItemSwagger,
 } from './response/show-permission.response';
 import { Permissions } from 'src/config/decorator/permission.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { PermissionGuard } from './permission.guard';
+import { PermissionGuard } from '../../config/guards/permission.guard';
 @Controller('backoffice/permissions')
 @ApiTags('Back Office - System Permissions')
 export class PermissionController {
@@ -28,8 +33,7 @@ export class PermissionController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('admin-jwt'), PermissionGuard)
   @ApiResponse({ type: ShowPermissionItemSwagger })
-  async get(
-  ) {
+  async get() {
     try {
       const permissions = await this.permissionService.get();
       const mappedPermissions = permissions.map(

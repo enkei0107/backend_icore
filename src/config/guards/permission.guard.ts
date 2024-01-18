@@ -1,7 +1,7 @@
 /** @format */
 
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { PermissionService } from './permission.service';
+import { PermissionService } from '../../back-office/permission/permission.service';
 import { Reflector } from '@nestjs/core';
 import { Permissions } from 'src/config/decorator/permission.decorator';
 @Injectable()
@@ -15,9 +15,7 @@ export class PermissionGuard implements CanActivate {
     this.permissionService = permissionService;
   }
 
-  async canActivate(
-    context: ExecutionContext,
-  ): Promise<boolean>{
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
     const permission = await this.permissionService.findRoleHasPermissionByName(
@@ -27,4 +25,3 @@ export class PermissionGuard implements CanActivate {
     return permission ? true : false;
   }
 }
-
